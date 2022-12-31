@@ -16,14 +16,21 @@ Done in 0.37s.
 `
 
 const findPaths = sampleText.match(/^\/.*.js/gm)
-console.log(findPaths);
+console.log('analysed file paths', findPaths);
 
-const onlyLintMessages = sampleText.match(/^.*\d:\d.*$/gm)
-console.log(onlyLintMessages);
+const getAllWarnings = () => {
+  const regex = /\w.[-].*/gm
+  const match = sampleText.match(regex)
+  
+  let dic = {}
+  match.map(element => {
+    if (dic[element]){
+      dic[element]++
+    } else {
+      dic[element] = 1
+    }
+  })
+  console.log('errors dictionary', dic);
+}
 
-findPaths.map(path => {
-  const sourceInLines = sampleText.split('\n')
-  console.log('path', sourceInLines.indexOf(path))
-})
-
-console.log(sampleText.indexOf('\n\n'))
+getAllWarnings()
