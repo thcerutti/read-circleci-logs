@@ -1,19 +1,17 @@
-const axios = require('axios')
+const {
+  getPipelineSteps,
+  getEslintDetails,
+} = require("./src/circleCiDetailsExtractor");
 
-const url = 'https://circleci.com/api/v1.1/project/github/thcerutti/sample-lint-postprocess/54'
+const {getAllWarnings} = require('./src/eslintExtractor')
 
-axios.get(url).then(res => {
-  const steps = res.data.steps;
-  steps.map(async step => {
-    step.actions.map(async action => {
-      if (step.name === 'Run ESLint'){
-        // console.log('output_url', action.output_url)
-        const url = action.output_url
-        const x = await axios.get(url)
-        console.log(`[[${step.name}]]`)
-        console.log(x.data[0].message)
-        console.log('---------------------------------------------')
-      }
-    })
-  })
-})
+const vcsType = "github";
+const username = "thcerutti";
+const project = "sample-lint-postprocess";
+const buildNum = "54";
+
+getPipelineSteps(vcsType, username, project, buildNum).then(async (steps) => {
+  const eslintLogs = await getEslintDetails(steps, "Run ESLint");
+  const eslintWarnings = getAllWarnings(eslintLogs)
+  console.log(eslintWarnings);
+});
