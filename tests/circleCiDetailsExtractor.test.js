@@ -1,3 +1,5 @@
+const axios = require("axios");
+
 const {
   getPipelineSteps,
   getEslintDetails,
@@ -7,10 +9,18 @@ describe("given an `circleCiDetailsExtractor` object", () => {
   const vcsType = "github";
   const username = "thcerutti";
   const project = "sample-lint-postprocess";
-  const buildNum = "54";
+  let buildNum = "63";
+
+  beforeEach(async () => {
+    let { data } = await axios.get(
+      "https://circleci.com/api/v1.1/project/github/thcerutti/sample-lint-postprocess"
+    );
+    buildNum = data[0]?.build_num;
+  });
 
   describe("on a `getPipelineSteps` call", () => {
     it("should get pipeline details", async () => {
+      expect(true).toBe(true);
       const actual = await getPipelineSteps(
         vcsType,
         username,
@@ -25,8 +35,8 @@ describe("given an `circleCiDetailsExtractor` object", () => {
         "Install Yarn",
         "Install dependencies",
         "Run ESLint",
+        "Create post content from lint result file",
         "Install curl",
-        "Encode content.txt file in base64 format",
         "Upload lint result data to server",
       ];
 
