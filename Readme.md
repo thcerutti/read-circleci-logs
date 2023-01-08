@@ -9,4 +9,4 @@ Restore the packages running `yarn` or `npm install` on the project's root folde
 
 ## Running the project
 
-As it is a Node.js repo, use `node <file_name>` to execute any of the scripts.
+As it is an Express (Node) repo, you can start the server by running `yarn setup-env-ci` on terminal.
