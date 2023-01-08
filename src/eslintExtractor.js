@@ -1,20 +1,15 @@
-module.exports =  {
+module.exports = {
   getAllWarnings: (inputText) => {
-    const warningTypeRegex = /\w.[-].*/gm;
-    const match = inputText.match(warningTypeRegex);
-
-    let dic = {};
-    match.map((element) => {
-      if (dic[element]) {
-        dic[element]++;
-      } else {
-        dic[element] = 1;
-      }
-    });
+    const groupRegex =
+      /(?<line_column>\d+:\d+)( {2})(?<type>\w+)( {2})(?<description>.+ {2})(?<short_name>.+)/gm;
+    const dic = [];
+    for (const myMatch of inputText.matchAll(groupRegex)) {
+      dic.push({ ...myMatch.groups });
+    }
     return dic;
   },
   getFilesPath: (inputText) => {
-    const filesPathRegex = /^\/.*.js/gm
-    return inputText.match(filesPathRegex)
-  }
+    const filesPathRegex = /^\/.*.js/gm;
+    return inputText.match(filesPathRegex);
+  },
 };
