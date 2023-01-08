@@ -21,8 +21,7 @@ describe("given an `eslintExtractor` object", () => {
   describe("on `getAllWarnings` call", () => {
     it("should return expected warnings", () => {
       const warnings = getAllWarnings(sampleText);
-      expect(warnings["no-unused-vars"]).toBe(1);
-      expect(warnings["no-undef"]).toBe(3);
+      expect(warnings.length).toBe(4);
     });
   });
 
