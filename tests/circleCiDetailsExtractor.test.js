@@ -3,7 +3,7 @@ const axios = require("axios");
 const {
   getPipelineSteps,
   getEslintDetails,
-} = require("../src/circleCiDetailsExtractor");
+} = require("../src/circle-ci");
 
 describe("given an `circleCiDetailsExtractor` object", () => {
   const vcsType = "github";

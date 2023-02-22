@@ -3,8 +3,8 @@ var router = express.Router();
 const {
   getPipelineSteps,
   getEslintDetails,
-} = require("../src/circleCiDetailsExtractor");
-const { getAllWarnings, getFilesPath } = require("../src/eslintExtractor");
+} = require("../src/circle-ci");
+const { getAllWarnings, getFilesPath } = require("../src/eslint");
 const fs = require('fs')
 
 /* GET home page. */

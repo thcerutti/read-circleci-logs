@@ -1,4 +1,4 @@
-const { getAllWarnings, getFilesPath } = require("../src/eslintExtractor");
+const { getAllWarnings, getFilesPath } = require("../src/eslint");
 
 const sampleText = `
 yarn run v1.22.11
