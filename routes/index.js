@@ -8,27 +8,24 @@ const { getAllWarnings, getFilesPath } = require("../src/eslintExtractor");
 const fs = require('fs')
 
 /* GET home page. */
-router.get("/", function (req, res, next) {
+router.get("/", function (_, res, next) {
   res.render("index", { title: "Express" });
 });
 
+/* POST receive webhook data */
 router.post("/pipeline-finished", async (req, res, next) => {
   const { job, project } = req.body;
-  console.log("jobNumber", job.number);
   const [vcs, user, projectName] = project.slug.split("/");
-  console.log("project info", vcs, user, projectName);
-
   const pipelineDetails = await getPipelineSteps(vcs, user, projectName, job.number);
-  console.log(pipelineDetails);
+  const eslintDetails = await getEslintDetails(pipelineDetails, "Run ESLint");
+  const warnings = getAllWarnings(eslintDetails)
+  const paths = getFilesPath(eslintDetails)
 
-  const details = await getEslintDetails(pipelineDetails, "Run ESLint");
-  console.log(details);
-
-  const warnings = getAllWarnings(details)
-  const paths = getFilesPath(details)
-  console.log('warnings and paths', warnings, paths);
-
-  res.json({ 
+  res.json({
+    jobNumber: job.number,
+    projectSlug: `${vcs}/${user}/${projectName}`,
+    pipelineDetails,
+    eslintDetails,
     warnings,
     paths
    });
