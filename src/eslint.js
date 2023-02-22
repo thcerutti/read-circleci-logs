@@ -1,3 +1,8 @@
+const axios = require("axios");
+
+const clearColorCodeRegex =
+  /[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/gm;
+
 module.exports = {
   getAllWarnings: (inputText) => {
     const groupRegex =
@@ -11,5 +16,14 @@ module.exports = {
   getFilesPath: (inputText) => {
     const filesPathRegex = /^\/.*.js/gm;
     return inputText.match(filesPathRegex);
+  },
+  getEslintDetails: async (pipelineSteps, eslintPipelineName) => {
+    const filteredStep = pipelineSteps.filter(
+      (item) => item.name === eslintPipelineName
+    );
+    const stepDetailUrl = filteredStep[0]?.actions[0]?.output_url;
+    const stepDetails = await axios.get(stepDetailUrl);
+
+    return stepDetails.data[0].message.replace(clearColorCodeRegex, "");
   },
 };

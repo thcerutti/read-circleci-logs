@@ -1,9 +1,8 @@
 const axios = require("axios");
 
-const {
-  getPipelineSteps,
-  getEslintDetails,
-} = require("../src/circle-ci");
+const { getPipelineSteps } = require("../src/circle-ci");
+
+const { getEslintDetails } = require("../src/eslint");
 
 describe("given an `circleCiDetailsExtractor` object", () => {
   const vcsType = "github";
@@ -53,8 +52,12 @@ describe("given an `circleCiDetailsExtractor` object", () => {
         buildNum
       );
       const details = await getEslintDetails(pipelineSteps, "Run ESLint");
-      expect(details.indexOf('/home/circleci/project/src/anotherFile.js') > 0).toBe(true);
-      expect(details.indexOf('/home/circleci/project/src/index.js') > 0).toBe(true);
+      expect(
+        details.indexOf("/home/circleci/project/src/anotherFile.js") > 0
+      ).toBe(true);
+      expect(details.indexOf("/home/circleci/project/src/index.js") > 0).toBe(
+        true
+      );
     });
   });
 });
